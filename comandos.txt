@@ -1,1 +1,9 @@
 aws sts get-caller-identity -> valida se eu estou autenticado na aws 
+
+
+Ips da AWS:
+1. x.x.x.0 → Network address
+2. x.x.x.1 → VPC Router
+3. x.x.x.2 → DNS (AmazonProvidedDNS)
+4. x.x.x.3 → Reservado (futuro uso da AWS)
+5. x.x.x.255 (último IP da subnet) → Reservado (não é broadcast na VPC, mas fica indisponível) :white_check_mark: 

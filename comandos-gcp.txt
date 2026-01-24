@@ -1,0 +1,16 @@
+Criar a service account:
+gcloud iam service-accounts create terraform-sa \
+  --display-name="Terraform SA"
+
+Dar permissão (exemplo para começar — backend):
+gcloud projects add-iam-policy-binding <PROJECT_ID> \
+  --member="serviceAccount:terraform-sa@<PROJECT_ID>.iam.gserviceaccount.com" \
+  --role="roles/storage.admin"
+
+Lista o projeto que você usando:
+gcloud config get-value project
+
+Gerar key JSON (somente DEV):
+gcloud iam service-accounts keys create terraform-sa.json \
+  --iam-account="terraform-sa@<PROJECT_ID>.iam.gserviceaccount.com"
+
