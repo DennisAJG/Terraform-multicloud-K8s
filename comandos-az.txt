@@ -1,0 +1,34 @@
+instalar a Azure CLI:
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+az version
+
+login:
+az login
+az account show
+az account list -o table
+
+
+Criar a identidade “Terraform” (App + Service Principal)
+Crie um Service Principal (ele cria App Registration por trás) e capture os IDs:
+SP_NAME="sp-terraform-oidc"
+
+az ad sp create-for-rbac \
+  --name "$SP_NAME" \
+  --role "Contributor" \
+  --scopes "/subscriptions/<SUBSCRIPTION_ID>" \
+  --sdk-auth false
+
+Agora pegue os IDs certinhos:
+# client_id (appId)
+CLIENT_ID=$(az ad sp list --display-name "$SP_NAME" --query "[0].appId" -o tsv)
+
+# object id do app (necessário para federated credential)
+APP_OBJECT_ID=$(az ad app list --display-name "$SP_NAME" --query "[0].id" -o tsv)
+
+TENANT_ID=$(az account show --query tenantId -o tsv)
+SUBSCRIPTION_ID=$(az account show --query id -o tsv)
+
+echo "CLIENT_ID=$CLIENT_ID"
+echo "APP_OBJECT_ID=$APP_OBJECT_ID"
+echo "TENANT_ID=$TENANT_ID"
+echo "SUBSCRIPTION_ID=$SUBSCRIPTION_ID"
